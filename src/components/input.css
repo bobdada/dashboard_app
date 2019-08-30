@@ -1,0 +1,44 @@
+
+.inp{
+    border: none;  
+    position: relative;
+    display: inline-block;
+}
+
+.input {
+    border: none;
+}
+
+
+.inp::before{
+    content:'';
+    background-color:#ccc;
+    font-family: inherit;
+    font-size: 1em; 
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+ 
+.inp::after{
+    content: '';
+    background-color:blue;
+    font-family: inherit;
+    font-size: 1em; 
+    width: 0%;
+    height: 2px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: 0.5s;
+    
+
+    
+  }
+
+  .inp:hover::after {
+      width: 100%;
+
+  }
