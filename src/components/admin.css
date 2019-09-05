@@ -1,5 +1,37 @@
 /* admin loader */
 
+.popup{
+  border: 2px solid black;
+  box-shadow: 2px 2px 2px 2px #ccc;
+  margin:30px;
+  position: absolute; 
+  right: 19%;
+  top: 27%;
+  padding: 30px;
+  width: 48%;
+  background: #ccca
+  
+  
+}
+
+
+.adminInputDiv{
+  position:absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right:0;
+  background:#ccca;
+  display: flex;
+  align-items: center;
+}
+.inputClose{
+  border-radius: 50%;
+  position:absolute;
+  right: 10px;
+  top:10px;
+}
 .adminLoader {
   margin: 100px auto;
   font-size: 25px;

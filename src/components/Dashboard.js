@@ -14,7 +14,7 @@ export default function Dashboard() {
   const [chatCount, setChatCount] = useState([]);
   const [adminData, setAdminData] = useState([]);
   const [friendsData, setFriendsData] = useState([]);
-  const [sidebar, setSidebar] = useState(false);
+  const [sidebar, setSidebar] = useState(true);
 
   function renderRoute() {
     switch (display) {
@@ -42,10 +42,10 @@ export default function Dashboard() {
         <nav>
           <ul className="lists">
             <li>
-              <div class="hamburger" onClick={showSidebar}>
-                <div class="hb"></div>
-                <div class="hb"></div>
-                <div class="hb"></div>
+              <div className="hamburger" onClick={showSidebar}>
+                <div className="hb"></div>
+                <div className="hb"></div>
+                <div className="hb"></div>
               </div>
             </li>
             <li>
@@ -62,7 +62,7 @@ export default function Dashboard() {
             adminData,
             setAdminData,
             friendsData,
-            setFriendsData
+            setFriendsData,
           }}
         >
           <div>

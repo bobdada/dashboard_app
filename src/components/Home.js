@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
 import PropContext from "../contexts/PropContext";
 import loginContext from "../contexts/LoginContext";
+import * as firebase from "firebase";
 
 const Home = pops => {
   const datas = useContext(PropContext);
-  const login = useContext(loginContext);
   const logOut = () => {
-    login.setLogin(false);
+    firebase.auth().signOut();
   };
+
   return (
     <div>
       <h2>Hi! Welcome to Dashboard</h2>

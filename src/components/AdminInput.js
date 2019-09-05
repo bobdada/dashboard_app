@@ -1,9 +1,15 @@
 import React from "react";
 
-export default function Loader(props) {
+export default function AdminInputs(props) {
+  const closeInput = () => {
+    props.setAdminInput(false);
+  };
   return (
     <div className="adminInputDiv">
       <div className="fip popup">
+        <button className="inputClose" onClick={closeInput}>
+          close
+        </button>
         <h3>Enter the admin to add</h3>
         <label htmlFor="">Name:</label>
         <input
@@ -11,7 +17,7 @@ export default function Loader(props) {
           name="name"
           onChange={props.getAdminData}
           value={props.inputs.name}
-        />{" "}
+        />
         <br />
         <br />
         <label htmlFor="">Post:</label>

@@ -1,21 +1,29 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
+import * as firebase from "firebase";
 
 import PropContext from "../contexts/PropContext";
 import "./admin.css";
+import AdminInput from "./AdminInput";
 
 export default function Admin() {
   const data = useContext(PropContext);
 
   const [apiData, setApiData] = useState([]);
   const [loader, setLoader] = useState(false);
+  const [adminInput, setAdminInput] = useState(false);
 
+  const db = firebase.firestore();
   useEffect(() => {
     setLoader(true);
-    axios
-      .get("https://5d664572520e1b00141ee08f.mockapi.io/api/v10/admins")
-      .then(function(response) {
-        setApiData(response.data);
+    db.collection("admins")
+      .orderBy("timestamp")
+      .onSnapshot(admin => {
+        let admins = [];
+        admin.docs.forEach(d => {
+          admins.push(d.data());
+        });
+        setApiData(admins);
         setLoader(false);
       });
   }, []);
@@ -24,35 +32,51 @@ export default function Admin() {
     name: "",
     post: "",
     age: "",
-    id: null
+    id: null,
   });
 
   const addInput = () => {
     setLoader(true);
     if (inputs.id === null) {
-      axios
-        .post("https://5d664572520e1b00141ee08f.mockapi.io/api/v10/admins", {
+      console.log("on add");
+      const docRef = db.collection("admins").doc();
+      docRef
+        .set({
           name: inputs.name,
           post: inputs.post,
-          age: inputs.age
+          age: inputs.age,
+          id: docRef.id,
+          timestamp: new Date().getTime(),
         })
         .then(function(response) {
           setLoader(false);
-          console.log(response);
-          setApiData([...apiData, response.data]);
+          setApiData([
+            ...apiData,
+            {
+              name: inputs.name,
+              post: inputs.post,
+              age: inputs.age,
+              id: docRef.id,
+            },
+          ]);
         });
     } else {
       apiData.map((a, i) => {
         if (a.id === inputs.id) {
           apiData[i] = { ...inputs };
-          console.log(apiData[i]);
           setApiData([...apiData]);
-          var link = `https://5d664572520e1b00141ee08f.mockapi.io/api/v10/admins/${inputs.id}`;
-          console.log(link);
-          axios.put(link, { ...inputs }).then(function(response) {
-            setLoader(false);
-            console.log(response);
-          });
+          db.collection("admins")
+            .doc(a.id)
+            .update({
+              name: inputs.name,
+              post: inputs.post,
+              age: inputs.age,
+              id: inputs.id,
+            })
+            .then(res => {
+              console.log("successfully edited");
+              setLoader(false);
+            });
         }
       });
     }
@@ -60,98 +84,125 @@ export default function Admin() {
       name: "",
       post: "",
       age: "",
-      id: null
+      id: null,
     });
+    setAdminInput(false);
   };
 
   const getAdminData = e => {
     setInputs({
       ...inputs,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const deleteAdmin = (r, i) => {
     setLoader(true);
-    var link = `https://5d664572520e1b00141ee08f.mockapi.io/api/v10/admins/${r.id}`;
-    console.log(link);
-    axios
-      .delete(link)
+    db.collection("admins")
+      .doc(i)
+      .delete()
       .then(function(response) {
         setLoader(false);
-        console.log(response);
-        console.log(apiData);
+        console.log("successful");
       })
       .catch(err => {
         console.log(err);
       });
-    let api = apiData.filter((a, ii) => {
-      return ii !== i;
-    });
+    let api = apiData.filter(a => a.id !== i);
     setApiData(api);
   };
 
   const editAdmin = (r, id) => {
+    setAdminInput(true);
     setInputs({
       name: r.name,
       post: r.post,
       age: r.age,
-      id: r.id
+      id: r.id,
     });
   };
 
-  return (
-    <div>
-      <div>{loader === true ? <div className="adminLoader" /> : <div />}</div>
-      {apiData && apiData.length === 0 ? null : (
-        <table className="table">
-          <tr>
-            <th>Name of Admin</th>
-            <th>Post of Admin</th>
-            <th>Age of admin</th>
-          </tr>
-          {apiData.map((r, i) => {
-            return (
-              <tr>
-                <td>{r.name}</td>
-                <td>{r.post}</td>
-                <td>{r.age}</td>
+  const showAdminInput = () => {
+    setAdminInput(true);
+  };
 
-                <button onClick={() => editAdmin(r, r.id)}>Edit</button>
-                <button onClick={() => deleteAdmin(r, i)}>Delete</button>
-              </tr>
-            );
-          })}
-        </table>
-      )}
+  return (
+    <div className="adminContainer">
       <div>
-        <p>Add Admins</p>
-        <label htmlFor="">Name:</label>
-        <input
-          type="text"
-          name="name"
-          onChange={getAdminData}
-          value={inputs.name}
-        />
-        <label htmlFor="">Post:</label>
-        <input
-          type="text"
-          name="post"
-          onChange={getAdminData}
-          value={inputs.post}
-        />
-        <label htmlFor="">Age:</label>
-        <input
-          type="text"
-          name="age"
-          onChange={getAdminData}
-          value={inputs.age}
-        />
-        <br /> <br />
-        <button className="bts" onClick={() => addInput()}>
-          Add Admin
-        </button>
+        {loader === true ? (
+          <div className="adminLoader" />
+        ) : (
+          <div>
+            {apiData && apiData.length === 0 ? (
+              <div>
+                <h1> There is not any data</h1>
+                <button
+                  onClick={showAdminInput}
+                  style={{
+                    display: "inline-block",
+                    borderRadius: "50%",
+                    height: "50px",
+                    border: "1px solid blue",
+                    color: "blue",
+                  }}
+                >
+                  Add Data
+                </button>
+              </div>
+            ) : (
+              <div>
+                <table className="table">
+                  <tr>
+                    <th>Name of Admin</th>
+                    <th> Post of Admin </th>
+                    <th> Age of admin </th>
+                    <th> Id </th>
+                  </tr>
+                  {apiData.map((r, i) => {
+                    return (
+                      <tr>
+                        <td>{r.name}</td>
+                        <td>{r.post}</td>
+                        <td>{r.age}</td>
+                        <td>{r.id}</td>
+
+                        <button onClick={() => editAdmin(r, r.id)}>Edit</button>
+                        <button onClick={() => deleteAdmin(r, r.id)}>
+                          Delete
+                        </button>
+                      </tr>
+                    );
+                  })}
+                  <button
+                    onClick={showAdminInput}
+                    style={{
+                      display: "inline-block",
+                      borderRadius: "50%",
+                      height: "50px",
+                      border: "1px solid blue",
+                      color: "blue",
+                      position: "relative",
+                      top: "20%",
+                      margin: "30px",
+                    }}
+                  >
+                    Add Data
+                  </button>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
       </div>
+
+      {adminInput === true ? (
+        <AdminInput
+          inputs={inputs}
+          addInput={addInput}
+          getAdminData={getAdminData}
+          setAdminInput={setAdminInput}
+        />
+      ) : null}
     </div>
   );
 }
