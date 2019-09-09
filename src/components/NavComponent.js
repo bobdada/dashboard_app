@@ -4,7 +4,7 @@ const NavComponent = props => {
     <div
       className="div1"
       style={{
-        transform: props.sidebar === false ? "translateX(-100%)" : "none"
+        transform: props.sidebar === false ? "translateX(-100%)" : "none",
       }}
     >
       <nav>
@@ -13,6 +13,7 @@ const NavComponent = props => {
           <Li name="admin" {...props} />
           <Li name="friends" {...props} />
           <Li name="chat" {...props} />
+          <Li name="edit profile" {...props} />
         </ul>
       </nav>
     </div>
@@ -25,7 +26,7 @@ const Li = props => {
       className="b1 bh"
       onClick={() => props.setDisplay(props.name)}
       style={{
-        backgroundColor: props.display === props.name ? "white" : "blue"
+        backgroundColor: props.display === props.name ? "white" : "blue",
       }}
     >
       {props.name.charAt(0).toUpperCase() + props.name.slice(1)}

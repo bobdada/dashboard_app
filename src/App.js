@@ -1,41 +1,43 @@
-import React, { useState, useEffect } from "react";
-import Dashboard from "./components/Dashboard";
-import Login from "./components/Login";
-import LoginContext from "./contexts/LoginContext";
-import SignUp from "./components/SignUp";
-import Loader from "./components/Loader";
-import * as firebase from "firebase";
+import React, { useState } from 'react'
+import Dashboard from './components/Dashboard'
+import Login from './components/Login'
+import LoginContext from './contexts/LoginContext'
 
-function App() {
-  const [loginState, setLoginState] = useState(null);
-  function routeLogin() {
+import Loader from './components/Loader'
+import * as firebase from 'firebase'
+
+function App () {
+  const [loginState, setLoginState] = useState(null)
+  const [googlePic, setGooglePic] = useState(null)
+  function routeLogin () {
     switch (loginState) {
-      case "login":
-        return <Dashboard />;
-      case "logout":
-        return <Login setLoginState={setLoginState} />;
+      case 'login':
+        return <Dashboard />
+      case 'logout':
+        return <Login />
       default:
-        return <Loader />;
+        return <Loader />
       // console.log("hey");
     }
   }
   firebase.auth().onAuthStateChanged(user => {
     if (user === null) {
-      setLoginState("logout");
+      setLoginState('logout')
     } else if (user !== null) {
-      setLoginState("login");
+      setLoginState('login')
     }
-  });
+  })
   return (
     <LoginContext.Provider
-    // value={{
-    //   loginState,
-    //   setLoginState,
-    //   routeLogin,
-    // }}
+      value={{
+        googlePic,
+        setGooglePic,
+        setLoginState,
+        loginState
+      }}
     >
       <div>{routeLogin()}</div>
     </LoginContext.Provider>
-  );
+  )
 }
-export default App;
+export default App

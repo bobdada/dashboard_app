@@ -7,7 +7,7 @@ const defaultInputs = {
   address: "",
   phone: "",
   email: "",
-  image: null
+  image: null,
 };
 
 const Friends = () => {
@@ -17,7 +17,7 @@ const Friends = () => {
   const handleInputs = e => {
     setInputs({
       ...inputs,
-      [e.target.name]: [e.target.value]
+      [e.target.name]: [e.target.value],
     });
   };
   const handleForm = e => {
@@ -45,8 +45,7 @@ const Friends = () => {
             name="name"
             onChange={handleInputs}
             value={inputs.name}
-          />{" "}
-          <br />
+          />
           <label className="fi" htmlFor="">
             Address:
           </label>
@@ -57,8 +56,7 @@ const Friends = () => {
             name="address"
             onChange={handleInputs}
             value={inputs.address}
-          />{" "}
-          <br />
+          />
           <label className="fi" htmlFor="">
             Phone Number:
           </label>
@@ -69,8 +67,7 @@ const Friends = () => {
             name="phone"
             onChange={handleInputs}
             value={inputs.phone}
-          />{" "}
-          <br />
+          />
           <label className="fi" htmlFor="">
             email-address:
           </label>
@@ -81,12 +78,11 @@ const Friends = () => {
             name="email"
             onChange={handleInputs}
             value={inputs.email}
-          />{" "}
-          <br />
+          />
           <label className="fi" htmlFor="">
             Upload Photo:
           </label>
-          <input type="file" name="pic" onChange={setPicture} /> <br /> <br />
+          <input type="file" name="pic" onChange={setPicture} />
           <div>
             {inputs.image && (
               <img
@@ -101,7 +97,6 @@ const Friends = () => {
             {" "}
             Add Friend
           </button>{" "}
-          <br />
         </form>
       </div>
 

@@ -38,11 +38,11 @@ body {
 }
 .btn {
   font-size: 20px;
+  display: inline-block;
   color: white;
   padding: 15px;
   border-radius: 50px;
   background-color: blue;
-  opacity: 0.6;
   width: 250px;
   height: 60px;
   margin: 20px;
@@ -223,4 +223,21 @@ body {
   box-shadow: 2px 2px solid black;
   height: 20px;
   margin: 10px;
+}
+
+.btnLogout {
+  font-size: 20px;
+  display: inline-block;
+  position: relative;
+  top: 250px;
+  color: white;
+  padding: 15px;
+  border-radius: 50px;
+  background-color: blue;
+  width: 200px;
+  height: 50px;
+  margin: 20px;
+}
+.btnLogout:hover {
+  color: black;
 }

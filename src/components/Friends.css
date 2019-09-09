@@ -1,18 +1,32 @@
-.div3{
-    background-color:blue;    
-    padding:10px;
-    margin-left: 1em;
-    display: flex;
-    box-shadow: 2px 3px black; 
-    
+.div3 {
+  background-color: blue;
+  padding: 10px;
+  margin-left: 1em;
+  display: flex;
+  box-shadow: 2px 3px black;
 }
 
-.div4{
-    display:flex;
-    flex-direction: row;
-    flex-wrap: wrap;    
-    justify-content: flex-start;
-    
-    }
+.div4 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
 
+#file {
+  opacity: 0;
+}
+.btn-2 {
+  height: 170px;
+  width: 150px;
+}
+.browse {
+  position: absolute;
+  height: auto;
+  width: auto;
+}
 
+.editPic {
+  height: 220px;
+  width: 220px;
+}
