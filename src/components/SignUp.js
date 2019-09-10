@@ -4,14 +4,19 @@ import LoginContext from '../contexts/LoginContext'
 
 import Loader from './Loader'
 
-export default function SignUp () {
+export default function SignUp(props) {
   const defaultInputs = {
     email: '',
-    password: ''
+    password: '',
+    image: ''
   }
   const [inputs, setInputs] = useState(defaultInputs)
   const [loader, setLoader] = useState(false)
+  const [profilePic, setProfilePic] = useState(null)
   const login = useContext(LoginContext)
+  const closeSignup = () => {
+    props.setShowSignup(false)
+  };
   const getInput = e => {
     setInputs({ ...inputs, [e.target.name]: e.target.value })
   }
@@ -34,13 +39,10 @@ export default function SignUp () {
         .then(newUser => {
           console.log(newUser)
           const userId = firebase.auth().currentUser.uid
-          console.log(userId)
+          console.log(newUser.user)
           const docRef = _firestore.collection('users').doc(userId)
           docRef.set({
-            name: inputs.name,
-            email: inputs.username,
-            address: inputs.address,
-            phone: inputs.phone
+            email: inputs.email,
             // timestamp: new Date().getTime()
           })
           setLoader(false)
@@ -49,7 +51,7 @@ export default function SignUp () {
           login.setLoginState('login')
         })
         .catch(e => {
-          // setLoader(false);
+          setLoader(false)
           console.log(e)
           switch (e.code) {
             case 'auth/invalid-email':
@@ -67,13 +69,31 @@ export default function SignUp () {
           }
         })
     }
+
+  }
+  const handlepp = (e) => {
+    const image = e.target.file[0]
+    setInputs({ ...inputs, image })
   }
 
   return (
     <div className='signup'>
       {loader === true ? <Loader /> : <div />}
       <div>
+        <button className="inputClose" onClick={closeSignup}>
+          close
+        </button>
+        {/* <div className="signupPP">
+          <img src=".../pic/pp.jpg" alt="upload pic" style={{ height: "100px", width: "100px" }} />
+        </div> */}
         <form className='signupForm'>
+          <label> Name:</label>
+          <input
+            className='signupinp'
+            type='text'
+            name='name'
+            onChange={getInput}
+          />
           <label> Email Address:</label>
           <input
             className='signupinp'
@@ -88,9 +108,23 @@ export default function SignUp () {
             name='password'
             onChange={getInput}
           />
+          <label> Address:</label>
+          <input
+            className='signupinp'
+            type='text'
+            name='address'
+            onChange={getInput}
+          />
+          <label>Phone Number:</label>
+          <input
+            className='signupinp'
+            type='text'
+            name='phone'
+            onChange={getInput}
+          />
           <label> Upload your profile picture here:</label>
           <br />
-          <input type='file' />
+          <input type='file' onChange={handlepp} />
           <button className='btn' onClick={createUser}>
             SignUp
           </button>

@@ -1,9 +1,6 @@
 import React, { useState, useContext } from 'react'
 import PropContext from '../contexts/PropContext'
 
-import H from './H'
-
-
 const Chat = () => {
   const chatCount = useContext(PropContext)
   const [inputs, setInputs] = useState({
@@ -111,11 +108,7 @@ const Chat = () => {
           Proceed Chat
         </button>
       </div>
-      <H>
-        <div>
 
-        </div>
-      </H>
     </div>
   )
 }

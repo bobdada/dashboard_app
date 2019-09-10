@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
-import './Friends.css'
 import * as firebase from 'firebase'
+
+import Loader from './Loader'
+import './Friends.css'
 
 const defaultUser = {
   name: '',
@@ -11,10 +13,13 @@ const defaultUser = {
   imageUrl: ''
 }
 
-export default function EditAuth () {
+export default function EditAuth() {
+
   const _firestore = firebase.firestore()
   const userId = firebase.auth().currentUser.uid
   let [userData, setUserData] = useState({ ...defaultUser })
+  const [loader, setLoader] = useState(false)
+
   const fileRef = useRef()
   useEffect(() => {
     _firestore
@@ -26,6 +31,9 @@ export default function EditAuth () {
         if (loginUser.exists) setUserData({ ...userData, ...loginUser.data() })
       })
   }, [])
+  const showLoader = () => {
+    setLoader(true)
+  }
 
   const handleInputs = e => {
     setUserData({
@@ -35,8 +43,8 @@ export default function EditAuth () {
   }
 
   const handleForm = e => {
+    showLoader()
     e.preventDefault()
-
     let file = userData.image
     const picRef = firebase
       .storage()
@@ -46,7 +54,7 @@ export default function EditAuth () {
       picRef.put(file).then(filee => {
         console.log(filee)
         console.log('uploaded')
-
+        setLoader(false)
         const storageRef = firebase
           .storage()
           .ref()
@@ -91,7 +99,7 @@ export default function EditAuth () {
     }
   }
 
-  function handleImage (e) {
+  function handleImage(e) {
     const image = e.target.files[0]
     let imageLocal = URL.createObjectURL(image)
     // setUserData({ ...userData });
@@ -101,6 +109,7 @@ export default function EditAuth () {
   }
   return (
     <div>
+      {loader === true ? <Loader /> : <div />}
       <p>Click on profile pic to edit </p>
       <div
         onClick={() => {
@@ -121,15 +130,15 @@ export default function EditAuth () {
               type='file'
               id='file'
               onChange={handleImage}
-              // style={{ display: "none" }}
+            // style={{ display: "none" }}
             />
           </label>
         </div>
         {userData.imageUrl === null ? (
           <p style={{ 'text-align': 'center' }}>No photo</p>
         ) : (
-          <img className='editPic' src={userData.imageUrl} alt=' ' />
-        )}
+            <img className='editPic' src={userData.imageUrl} alt=' ' />
+          )}
       </div>
       <p>Edit your profile</p>
       <div>

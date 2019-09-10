@@ -11,7 +11,7 @@ const defaultUser = {
   imageUrl: null
 }
 
-export default function Users (props) {
+export default function Users(props) {
   const db = firebase.firestore()
   const [user, setUser] = useState(defaultUser)
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function Users (props) {
       .doc(userId)
       .get()
       .then(loginUser => {
-        console.log(loginUser.data())
+        // console.log(loginUser.data())
         if (loginUser.exists) setUser({ ...user, ...loginUser.data() })
       })
   }, [])
@@ -81,33 +81,33 @@ export default function Users (props) {
       {loader === true ? (
         <div className='adminLoader' />
       ) : (
-        <div>
           <div>
-            {
-              <img
-                src={profilePic}
-                style={{ height: '150px', width: '200px' }}
-                alt=' '
-              />
-            }
-          </div>
-          <div>
-            {profilePic && (
-              <ul>
-                <li> Name: {user.name} </li>
-                <li> Address: {user.address}</li>
-                <li> Phone: {user.phone} </li>
-                <li> Email: {user.email}</li>
-              </ul>
-            )}
-          </div>
-          {props.show === true ? (
-            <button className='btn' onClick={showUsers}>
-              Show User
+            <div>
+              {
+                <img
+                  src={profilePic}
+                  style={{ height: '150px', width: '200px' }}
+                  alt=' '
+                />
+              }
+            </div>
+            <div>
+              {profilePic && (
+                <ul>
+                  <li> Name: {user.name} </li>
+                  <li> Address: {user.address}</li>
+                  <li> Phone: {user.phone} </li>
+                  <li> Email: {user.email}</li>
+                </ul>
+              )}
+            </div>
+            {props.show === true ? (
+              <button className='btn' onClick={showUsers}>
+                Show User
             </button>
-          ) : null}
-        </div>
-      )}
+            ) : null}
+          </div>
+        )}
     </div>
   )
 }

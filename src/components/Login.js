@@ -8,7 +8,7 @@ import '../App.css'
 import Loader from './Loader'
 import SignUp from './SignUp'
 
-export default function Login () {
+export default function Login() {
   const defaultInputs = {
     username: '',
     password: '',

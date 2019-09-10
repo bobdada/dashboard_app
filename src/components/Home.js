@@ -2,8 +2,11 @@ import React, { useContext, useState } from 'react'
 import PropContext from '../contexts/PropContext'
 import * as firebase from 'firebase'
 import Users from './Users'
+import H from './H'
+import D from './D'
 
-function Home () {
+
+function Home() {
   const datas = useContext(PropContext)
   const [show, setShow] = useState(true)
   const logOut = () => {
@@ -24,9 +27,32 @@ function Home () {
       <div>
         <Users show={show} setShow={setShow} />
       </div>
-      <button className='btnLogout' onClick={logOut}>
+      {/* <button className='btnLogout' onClick={logOut}>
         LogOut
-      </button>
+      </button> */}
+
+      <D>
+        <div>
+          <div>
+            <p>hello daju</p>
+            <div>
+              <p>k xa khabar</p>
+            </div>
+          </div>
+        </div>
+      </D>
+
+      {/* <H>
+        <div>
+          <div className="dv">
+            <p className="test">
+              <span>
+                <p className="target" transform>H1 huna paro</p>
+              </span>
+            </p>
+          </div>
+        </div>
+      </H> */}
     </div>
   )
 }

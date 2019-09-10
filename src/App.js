@@ -6,10 +6,10 @@ import LoginContext from './contexts/LoginContext'
 import Loader from './components/Loader'
 import * as firebase from 'firebase'
 
-function App () {
+function App() {
   const [loginState, setLoginState] = useState(null)
   const [googlePic, setGooglePic] = useState(null)
-  function routeLogin () {
+  function routeLogin() {
     switch (loginState) {
       case 'login':
         return <Dashboard />
