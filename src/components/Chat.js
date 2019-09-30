@@ -58,7 +58,6 @@ const Chat = () => {
     const arr = chatCount.chatCount.filter((b, ii) => index !== ii)
     chatCount.setChatCount(arr)
   }
-
   return (
     <div>
       {chatCount.chatCount.length === 0 ? null : (
@@ -112,4 +111,4 @@ const Chat = () => {
     </div>
   )
 }
-export default Chat
+export default Chat;
